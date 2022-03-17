@@ -44,7 +44,6 @@ namespace rmoss_entity_cam
         bool close() override;
         bool is_open() override;
         bool grab_image(cv::Mat &image) override;
-        bool grab_image(cv::Mat &image, double &timestamp_ms) override;
         bool set_parameter(rmoss_cam::CamParamType type, int value) override;
         bool get_parameter(rmoss_cam::CamParamType type, int & value) override;
         std::string error_message() override;

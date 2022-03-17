@@ -212,59 +212,6 @@ namespace rmoss_entity_cam
         return true;
     }
 
-    bool MindVisionCam::grab_image(cv::Mat &image, double &timestamp_ms)
-    {
-        if (!is_open())
-        {
-            RCLCPP_WARN(
-                node_->get_logger(),
-                "Camera is not open!");
-            return false;
-        }
-
-        CameraSdkStatus status = CAMERA_STATUS_SUCCESS;
-        tSdkFrameHead header;
-
-        if (is_soft_trigger_)
-        {
-            // 进行一次触发
-            status = CameraSoftTrigger(hCamera_);
-        }
-
-        if (status != CAMERA_STATUS_SUCCESS)
-        {
-            RCLCPP_WARN(
-                node_->get_logger(),
-                "ERROR [%d] - Trigger failed!", status);
-        }
-
-        // 读取帧 超时1000ms
-        status = CameraGetImageBuffer(hCamera_, &header, &pFrameBuffer_, 1000);
-        if (status != CAMERA_STATUS_SUCCESS)
-        {
-            CameraReleaseImageBuffer(hCamera_, pFrameBuffer_);
-            RCLCPP_WARN(
-                node_->get_logger(),
-                "ERROR [%d] - Frame read failed!", status);
-            return false;
-        }
-
-        image = cv::Mat(header.iHeight, header.iWidth, CV_8UC3);
-        // 转换raw图像
-        status = CameraImageProcess(hCamera_, pFrameBuffer_, image.data, &header);
-        if (status != CAMERA_STATUS_SUCCESS)
-        {
-            RCLCPP_WARN(node_->get_logger(), "ERROR [%d] - Image process failed!", status);
-        }
-        // 时间戳
-        timestamp_ms = header.uiTimeStamp / 10.;
-
-        // 释放缓存
-        CameraReleaseImageBuffer(hCamera_, pFrameBuffer_);
-
-        return true;
-    }
-
     // 保存相机配置文件
     bool MindVisionCam::save_config(const std::string &path)
     {
