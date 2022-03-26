@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 3.8)
 project(rmoss_mindvision_driver)
 
+# Default to C++14
+if(NOT CMAKE_CXX_STANDARD)
+  set(CMAKE_CXX_STANDARD 14)
+endif()
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
@@ -50,30 +54,19 @@ endif()
 # Include
 include_directories(include)
 
-set(cam_drivers
-  "src/cam_driver/mindvision_cam.cpp"
+# mindvision_cam_component
+add_library(mindvision_cam_component SHARED
+  "src/mindvision_cam.cpp"
+  "src/mindvision_cam_node.cpp"
 )
-
-# 创建shared lib
-add_library(${PROJECT_NAME} SHARED
-    ${cam_drivers}
-    "src/mindvision_cam_node.cpp"
-)
-# MV相机
 if(WITH_MVSDK)
-    target_link_libraries(${PROJECT_NAME} MVSDK pthread)
+    target_link_libraries(mindvision_cam_component MVSDK pthread)
 endif()
-
-ament_target_dependencies(${PROJECT_NAME} ${dependencies})
-ament_export_targets(${PROJECT_NAME} HAS_LIBRARY_TARGET)
-ament_export_dependencies(${dependencies})
-
-# MindVisionCamera可执行入口
-add_executable(mindvision_cam "src/mindvision_cam_node_main.cpp")
-target_link_libraries(mindvision_cam ${PROJECT_NAME})
-
+ament_target_dependencies(mindvision_cam_component ${dependencies})
 # register component nodes
-rclcpp_components_register_nodes(${PROJECT_NAME} "rmoss_cam::MindVisionCamNode")
+rclcpp_components_register_node(mindvision_cam_component
+  PLUGIN "rmoss_mindvision_driver::MindVisionCamNode"
+  EXECUTABLE mindvision_cam)
 
 # install cam driver lib
 install(
@@ -81,26 +74,13 @@ install(
     DESTINATION lib
 )
 
-# install inlude directories
-install(
-    DIRECTORY include/
-    DESTINATION include
-)
-
-# install libraries
-install(
-    TARGETS ${PROJECT_NAME}
-    EXPORT ${PROJECT_NAME}
-    LIBRARY DESTINATION lib
-    ARCHIVE DESTINATION lib
-    RUNTIME DESTINATION bin
-    INCLUDES DESTINATION include
-)
-
-# install executable entry
-install(
-    TARGETS mindvision_cam
-    DESTINATION lib/${PROJECT_NAME}
+# Install libraries
+install(TARGETS mindvision_cam_component
+  EXPORT export_${PROJECT_NAME}
+  LIBRARY DESTINATION lib
+  ARCHIVE DESTINATION lib
+  RUNTIME DESTINATION bin
+  INCLUDES DESTINATION include
 )
 
 # install launch resource config directory
@@ -113,5 +93,8 @@ if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
   ament_lint_auto_find_test_dependencies()
 endif()
+
+ament_export_targets(export_${PROJECT_NAME})
+ament_export_dependencies(${dependencies})
 
 ament_package()
