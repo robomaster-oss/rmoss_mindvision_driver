@@ -32,6 +32,7 @@ cd <rmoss_ws>/src
 git clone https://github.com/robomaster-oss/rmoss_interfaces.git
 git clone https://github.com/robomaster-oss/rmoss_core.git
 git clone https://github.com/robomaster-oss/rmoss_mindvision_driver.git
+cd ..
 
 rosdep install -y -r -q --from-paths src --ignore-src --rosdistro humble
 
