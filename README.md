@@ -23,6 +23,21 @@
 
 ## 使用方式
 
+**注意：请安装 `git-lfs` (此仓库使用git-lfs)存储较大的二进制文件**
+
+`git-lfs`安装方式: ```apt-get install git-lfs```
+
+```bash
+cd <rmoss_ws>/src
+git clone https://github.com/robomaster-oss/rmoss_interfaces.git
+git clone https://github.com/robomaster-oss/rmoss_core.git
+git clone https://github.com/robomaster-oss/rmoss_mindvision_driver.git
+
+rosdep install -y -r -q --from-paths src --ignore-src --rosdistro humble
+
+colcon build --symlink-install
+```
+
 > 参照`rmoss_core/rmoss_cam`工具包中定义
 
 launch方式运行：
