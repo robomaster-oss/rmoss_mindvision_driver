@@ -1,7 +1,7 @@
 # rmoss_mindvision_driver
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![Build and Test (Galactic)](https://github.com/robomaster-oss/rmoss_mindvision_driver/actions/workflows/ci.yml/badge.svg?branch=galactic)](https://github.com/robomaster-oss/rmoss_mindvision_driver/actions/workflows/ci.yml)
+[![Build and Test (Humble)](https://github.com/robomaster-oss/rmoss_mindvision_driver/actions/workflows/ci.yml/badge.svg?branch=humble)](https://github.com/robomaster-oss/rmoss_mindvision_driver/actions/workflows/ci.yml)
 
 
 ![](rmoss_bg.png)
