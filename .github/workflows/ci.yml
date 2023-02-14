@@ -12,6 +12,8 @@ jobs:
     container:
       image: rostooling/setup-ros-docker:ubuntu-focal-ros-galactic-desktop-latest
     steps:
+      - name: Setup git-lfs
+        run: apt-get update && apt-get install -y git-lfs && rm -rf /var/lib/apt/lists/*
       - name: Check out
         uses: actions/checkout@v3
         with:
