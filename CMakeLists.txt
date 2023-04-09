@@ -13,6 +13,7 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rmoss_interfaces REQUIRED)
 find_package(rmoss_cam REQUIRED)
+find_package(rmoss_util REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_components REQUIRED)
 find_package(sensor_msgs REQUIRED)
@@ -26,6 +27,7 @@ set(dependencies
   OpenCV
   rmoss_interfaces
   rmoss_cam
+  rmoss_util
 )
 
 # options
