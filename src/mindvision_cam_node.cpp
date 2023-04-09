@@ -17,18 +17,25 @@
 #include <memory>
 #include <string>
 
+#include <rmoss_util/url_resolver.hpp>
+
 namespace rmoss_mindvision_driver
 {
 MindVisionCamNode::MindVisionCamNode(
   const rclcpp::NodeOptions & options)
 {
-  node_ = std::make_shared<rclcpp::Node>("mv_cam", options);
+  node_ = std::make_shared<rclcpp::Node>("mindvision_cam", options);
 
   node_->declare_parameter("sn", "");
   node_->declare_parameter("config_path", "");
 
   std::string cam_sn = node_->get_parameter("sn").as_string();
   std::string config_path = node_->get_parameter("config_path").as_string();
+
+  std::string config_path_resolved = rmoss_util::URLResolver::get_resolved_path(config_path);
+  if (config_path_resolved != "") {
+    config_path = config_path_resolved;
+  }
 
   RCLCPP_INFO(
     node_->get_logger(),
