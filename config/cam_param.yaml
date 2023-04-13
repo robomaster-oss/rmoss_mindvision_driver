@@ -8,6 +8,6 @@
         camera_k: [2032.263030, 0.000000, 625.248326, 0.000000, 2033.755589, 507.872755, 0.000000, 0.000000, 1.000000]
         camera_d: [-0.065000, 0.116275, -0.000281, 0.001765, 0.000000]
         fps: 200
-        autostart: false
+        autostart: true
         use_sensor_data_qos: false
         use_image_transport_camera_publisher: true
