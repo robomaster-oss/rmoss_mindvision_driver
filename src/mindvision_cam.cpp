@@ -173,6 +173,7 @@ bool MindVisionCam::grab_image(cv::Mat & image)
     RCLCPP_WARN(
       node_->get_logger(),
       "ERROR: [%d] - Trigger failed!", status);
+    return false;
   }
 
   // 读取帧 超时1000ms
@@ -182,6 +183,7 @@ bool MindVisionCam::grab_image(cv::Mat & image)
     RCLCPP_WARN(
       node_->get_logger(),
       "ERROR [%d] - Frame read failed!", status);
+    return false;
   }
 
   image = cv::Mat(header.iHeight, header.iWidth, CV_8UC3);
@@ -190,6 +192,7 @@ bool MindVisionCam::grab_image(cv::Mat & image)
   status = CameraImageProcess(hCamera_, pFrameBuffer_, image.data, &header);
   if (status != CAMERA_STATUS_SUCCESS) {
     RCLCPP_WARN(node_->get_logger(), "Image process failed!");
+    return false;
   }
 
   // 释放缓存
